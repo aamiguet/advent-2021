@@ -1,0 +1,9 @@
+### Metals ###
+.metals/
+.bloop/
+project/**/metals.sbt
+
+.bsp/
+
+**/target
+ressources/
