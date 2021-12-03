@@ -25,7 +25,8 @@ case object Day1 extends Day {
 
   def countIncreasing(ms: List[Int]): Int = countIncreasing(ms, None, 0)
 
-  def slidingWindow(ms: List[Int]): List[Int] = ms.zip(ms.tail.zip(ms.tail.tail)).map((a, b) => a + b._1 + b._2)
+  def slidingWindow(ms: List[Int]): List[Int] =
+    ms.lazyZip(ms.tail).lazyZip(ms.tail.tail).toList.map((a, b, c) => a + b + c)
 
   def readFile(filename: String): List[Int] = Source.fromFile(filename).getLines.toList.map(_.toInt)
 
