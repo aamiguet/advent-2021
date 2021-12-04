@@ -27,17 +27,18 @@ case object Day1 extends Day {
 
   def countIncreasing(ms: List[Int]): Int = countIncreasing(ms, None, 0)
 
-  def slidingWindow(ms: List[Int]): List[Int] =
-    ms.lazyZip(ms.tail).lazyZip(ms.tail.tail).toList.map((a, b, c) => a + b + c)
+  def slidingWindow(
+    ms: List[Int]
+  ): List[Int] = ms.lazyZip(ms.tail).lazyZip(ms.tail.tail).toList.map((a, b, c) => a + b + c)
 
   lazy val readFile: List[Int] = Source.fromFile(filename).getLines.toList.map(_.toInt)
 
-  def part1 = {
+  def part1 =
     println(s"Part I : the number of increasing depth measurement is ${countIncreasing(readFile)}")
-  }
 
-  def part2 = {
-    println(s"Part II : the number of increasing depth measurement with sliding windows is ${countIncreasing(slidingWindow(readFile))}")
-  }
+  def part2 =
+    println(
+      s"Part II : the number of increasing depth measurement with sliding windows is ${countIncreasing(slidingWindow(readFile))}"
+    )
 
 }

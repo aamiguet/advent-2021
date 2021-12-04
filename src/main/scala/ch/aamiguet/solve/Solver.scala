@@ -1,12 +1,24 @@
 package ch.aamiguet.solve
 
+import day.*
+
 object Solver {
 
-  def solve(args: Map[String, Any]): Unit = {
+  val dm: Map[String, Day] = Map(
+    "1" -> Day1,
+    "2" -> Day2,
+  )
+
+  def solve(args: Map[String, Any]): Unit =
     args.get("day") match {
-      case Some(d: String)  if d == "1" => day.Day1.solve
-      case Some(d: String)  if d == "2" => day.Day2.solve
+      case Some(d: String) if dm.keys.toList.contains(d) =>
+        dm.get(d).head.solve
+      case Some(d: String) if d == "a" || d == "all" =>
+        dm.map { (d, solver) =>
+          println(s"Solving day $d")
+          solver.solve
+        }
       case _ =>
     }
-  }
+
 }

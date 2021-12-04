@@ -59,19 +59,24 @@ case object Day2 extends Day {
   def parseMoves(lines: List[String]): List[Move] = lines.map(Move.apply)
 
   lazy val readFile: List[Move] = {
-     val lines = Source.fromFile(filename).getLines.toList
-     parseMoves(lines)
+    val lines = Source.fromFile(filename).getLines.toList
+    parseMoves(lines)
   }
 
   def part1: Unit = {
     val moves = readFile
     val finalPos = finalPosition(originalPos, moves)
-    println(s"Part I : the product of the horizontal position and the depth after the moves is ${finalPos.product}")
+    println(
+      s"Part I : the product of the horizontal position and the depth after the moves is ${finalPos.product}"
+    )
   }
+
   def part2: Unit = {
     val moves = readFile
     val finalPosWithAim = finalPositionWithAim(originalPos, moves)
-    println(s"Part I : the product of the horizontal position and the depth after the moves with aim is ${finalPosWithAim.product}")
+    println(
+      s"Part II : the product of the horizontal position and the depth after the moves with aim is ${finalPosWithAim.product}"
+    )
   }
 
 }
