@@ -47,7 +47,7 @@ case class Position(horizontal: Int, depth: Int, aim: Int = 0) {
 
 case object Day2 extends Day {
 
-  val inputFile = "day2.txt"
+  val dayId = 2
   val originalPos = Position(0, 0)
 
   def finalPosition(initialPos: Position, moves: List[Move]): Position =

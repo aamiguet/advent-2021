@@ -7,7 +7,7 @@ import scala.io.Source
 
 case object Day1 extends Day {
 
-  val inputFile = "day1.txt"
+  val dayId = 1
 
   @tailrec
   def countIncreasing(ms: List[Int], currentDepth: Option[Int], acc: Int): Int =

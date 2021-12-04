@@ -2,9 +2,9 @@ package ch.aamiguet.solve
 
 trait Day {
 
-  def inputFile: String
+  val dayId: Int
 
-  def filename: String = s"ressources/$inputFile"
+  def filename: String = s"ressources/day$dayId.txt"
 
   def part1: Unit
   def part2: Unit
