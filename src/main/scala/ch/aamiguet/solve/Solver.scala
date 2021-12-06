@@ -7,6 +7,7 @@ object Solver {
   val dm: Map[String, Day] = Map(
     "1" -> Day1,
     "2" -> Day2,
+    "3" -> Day3,
   )
 
   def solve(args: Map[String, Any]): Unit =
