@@ -13,21 +13,39 @@ object Day6 extends Day {
     .toList
     .flatMap(line => line.split(",").map(_.toInt))
 
-  def nextFishes(fishes: List[Int]): List[Int] =
-    fishes.foldLeft(List.empty[Int])((acc, fish) =>
-      if (fish == 0)
-        6 :: 8 :: acc
-      else
-        (fish - 1) :: acc
-    )
+  def asMap(fishes: List[Int]) = fishes.groupBy(f => f).mapValues(v => BigInt(v.length)).toMap
+
+  lazy val fishesMap = asMap(fishes)
+
+  def nextFishes(fishes: Map[Int, BigInt]): Map[Int, BigInt] =
+    fishes.foldLeft(Map.empty[Int, BigInt]) { (acc, f) =>
+      val key = f._1
+      val number = f._2
+      if (key == 0) {
+        acc.updatedWith(6) {
+          case Some(n) =>
+            Some(n + number)
+          case None =>
+            Some(number)
+        } + (8 -> number)
+      } else {
+        val newKey = key - 1
+        acc.updatedWith(newKey) {
+          case Some(n) =>
+            Some(n + number)
+          case None =>
+            Some(number)
+        }
+      }
+    }
 
   @tailrec
-  def fishesCount(fishes: List[Int], days: Int): Int =
+  def fishesCount(fishes: Map[Int, BigInt], days: Int): BigInt =
     if (days == 0)
-      fishes.length
+      fishes.values.sum
     else
       fishesCount(nextFishes(fishes), days - 1)
 
-  def part1 = println(s"Count after 80 days is ${fishesCount(fishes, 80)}")
-  def part2 = println(s"Count after 80 days is ${fishesCount(fishes, 256)}")
+  def part1 = println(s"Count after 80 days is ${fishesCount(fishesMap, 80)}")
+  def part2 = println(s"Count after 256 days is ${fishesCount(fishesMap, 256)}")
 }
