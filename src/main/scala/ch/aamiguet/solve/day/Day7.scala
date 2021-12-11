@@ -12,18 +12,30 @@ object Day7 extends Day {
     .toList
     .flatMap(line => line.split(",").map(_.toInt))
 
-  def fuelCost(crabs: List[Int], pos: Int): Int = crabs.map(c => math.abs(c - pos)).sum
+  def fuelCost(crabs: List[Int], pos: Int)(fc: (Int, Int) => Int): Int =
+    crabs.map(c => fc(c, pos)).sum
 
-  def optimalPos(crabs: List[Int]): (Int, Int) = {
+  def optimalPos(crabs: List[Int])(fc: (Int, Int) => Int): (Int, Int) = {
     val r = (crabs.min to crabs.max).toList
-    val costs = r.map(i => (i, fuelCost(crabs, i)))
+    val costs = r.map(i => (i, fuelCost(crabs, i)(fc)))
     costs.sortWith((a, b) => a._2 < b._2).head
   }
 
-  def part1 = {
-    val op = optimalPos(crabs)
-    println(s"Optimal position is ${op._1} with a fuel consumption of ${op._2}")
+  def linearFuelCost(crabPos: Int, pos: Int) = math.abs(crabPos - pos)
+
+  def increasingFuelCost(crabPos: Int, pos: Int) = {
+    val diff = math.abs(crabPos - pos)
+    (diff * (diff + 1)) / 2
   }
 
-  def part2 = ???
+  def part1 = {
+    val op = optimalPos(crabs)(linearFuelCost)
+    println(s"Optimal position is ${op._1} with a linear fuel consumption of ${op._2}")
+  }
+
+  def part2 = {
+    val op = optimalPos(crabs)(increasingFuelCost)
+    println(s"Optimal position is ${op._1} with an increasing fuel consumption of ${op._2}")
+  }
+
 }

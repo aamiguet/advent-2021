@@ -9,12 +9,15 @@ class Day7Spec extends Specification {
   "Day 7 specification".br
 
   "Fuel cost" >> {
-    Day7.fuelCost(crabs, 2) mustEqual 37
+    Day7.fuelCost(crabs, 2)(Day7.linearFuelCost) mustEqual 37
   }
 
-  "Optimal position" >> {
-    Day7.optimalPos(crabs) mustEqual (2, 37)
+  "Optimal position with linear fuel cost" >> {
+    Day7.optimalPos(crabs)(Day7.linearFuelCost) mustEqual (2, 37)
   }
 
+  "Optimal position with increasing fuel cost" >> {
+    Day7.optimalPos(crabs)(Day7.increasingFuelCost) mustEqual (5, 168)
+  }
 
 }
