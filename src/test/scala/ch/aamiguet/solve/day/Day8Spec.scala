@@ -26,45 +26,17 @@ class Day8Spec extends Specification {
   ).map(DisplayWire.apply)
 
   "Raw decode" >> {
-    Day8.decode("ab", Map.empty[Int, String]) mustEqual Some(1)
+    Display.decode("ab", Map.empty[Int, String]) mustEqual Some(1)
   }
 
   "Single line, simple test" >> {
-    val dm = Day8.digitMap(single.codes, Map.empty[Int, String])
+    val dm = Display.digitMap(single.codes, Map.empty[Int, String])
     dm.get(1) mustEqual Some("ab")
     dm.get(7) mustEqual Some("dab")
   }
 
   "Easy count of single" >> {
     Day8.easyDigitsCount(List(single)) mustEqual 0
-  }
-
-  "Count" >> {
-    val codes = List(
-      "edbfga",
-      "begcd",
-      "cbg",
-      "gc",
-      "gcadebf",
-      "fbgde",
-      "acbgfd",
-      "abcde",
-      "gfcbed",
-      "gfec",
-    )
-    val dm = Map(
-      1 -> "gc",
-      7 -> "cbg",
-      4 -> "gfec",
-      8 -> "gcadebf",
-    )
-    val values = List(
-      "fcgedb",
-      "cgb",
-      "dgebacf",
-      "gc",
-    )
-    Day8.count(values, dm, List(1, 4, 7, 8)) mustEqual 3
   }
 
   "Count of easy numbers" >> {
