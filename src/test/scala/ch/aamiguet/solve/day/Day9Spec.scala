@@ -19,4 +19,8 @@ class Day9Spec extends Specification {
     Day9.riskLevel(Day9.lowPoints(heights)) mustEqual 15
   }
 
+  "Product of the three largest basins" >> {
+    Day9.productOfThreeLargestBasins(heights) mustEqual 1134
+  }
+
 }
