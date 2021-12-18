@@ -20,14 +20,20 @@ class Day10Spec extends Specification {
   )
 
   "Illegal character testing with syntax error" >> {
-    Day10.illegalCharacter("{([(<{}[<>[]}>{[]{[(<()>") mustEqual Some('}')
+    Day10.missingClosingChars("{([(<{}[<>[]}>{[]{[(<()>") mustEqual Left('}')
   }
 
   "Illegal character testing with ok chunck" >> {
-    Day10.illegalCharacter("[({(<(())[]>[[{[]{<()<>>") mustEqual None
+    Day10.missingClosingChars("[({(<(())[]>[[{[]{<()<>>") mustEqual Right(
+      List('}', '}', ']', ']', ')', '}', ')', ']')
+    )
   }
 
   "Syntax error score" >> {
     Day10.syntaxErrorScore(chunks) mustEqual 26397
+  }
+
+  "Missing chars score" >> {
+    Day10.missingClosingCharsScore(chunks) mustEqual 288957L
   }
 }
