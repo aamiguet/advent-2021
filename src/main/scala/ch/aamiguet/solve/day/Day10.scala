@@ -54,8 +54,7 @@ object Day10 extends Day {
   def syntaxErrorScore(chunks: List[String]): Int =
     chunks
       .map(missingClosingChars(_))
-      .filter(_.isLeft)
-      .map(_.swap.toOption.get)
+      .collect{case Left(e) => e}
       .map(charValueError.get(_).get)
       .sum
 
@@ -66,8 +65,7 @@ object Day10 extends Day {
     val scores =
       chunks
         .map(missingClosingChars(_))
-        .filter(_.isRight)
-        .map(_.toOption.get)
+        .collect{case Right(cs) => cs}
         .map(missingScore(_))
         .sorted
     scores.apply(scores.length / 2)
