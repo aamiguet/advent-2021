@@ -5,7 +5,7 @@ import org.specs2.mutable.Specification
 
 class Day9Spec extends Specification {
 
-  "Day 8 Specification".br
+  "Day 9 Specification".br
 
   val heights: Array[Array[Int]] = Array(
     "2199943210",
