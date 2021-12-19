@@ -39,4 +39,8 @@ class Day11Spec extends Specification {
     Day11.flashingCount(grid, 100) mustEqual 1656
   }
 
+  "Synchronizing step" >> {
+    grid.synchroStep() mustEqual 195
+  }
+
 }

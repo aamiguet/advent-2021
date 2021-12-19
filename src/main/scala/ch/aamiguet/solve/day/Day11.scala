@@ -104,6 +104,14 @@ case class OctopusGrid(val octopuses: Map[Position, Octopus]) {
     |-----""".stripMargin
   }
 
+  def synchroStep(currentStep: Int = 1): Int = {
+    val computedGrid = increaseEnergy.resolveFlashing
+    if (computedGrid.octopuses.values.forall(_.isFlashing))
+      currentStep
+    else
+      computedGrid.nextStep.synchroStep(currentStep + 1)
+  }
+
 }
 
 object OctopusGrid {
@@ -144,5 +152,9 @@ object Day11 extends Day {
     computeRounds(grid, rounds, List.empty[Int]).sum
 
   def part1 = println(s"Flashing count after 100 rounds is ${flashingCount(grid, 100)}")
-  def part2 = ???
+
+  def part2 = println(
+    s"We have to wait ${grid.synchroStep()} steps until all octopi are synchronized"
+  )
+
 }
