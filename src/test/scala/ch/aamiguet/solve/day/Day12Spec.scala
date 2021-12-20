@@ -57,7 +57,17 @@ class Day12Spec extends Specification {
   )
 
   "Small system" >> {
-    CaveSystem(connections).allPaths.size mustEqual 10
+    CaveSystem(connections, 0).allPaths.size mustEqual 10
+    CaveSystem(connections, 1).allPaths.size mustEqual 36
+  }
+
+  "Cave system filtering" >> {
+    val cs1 = CaveSystem(Map.empty, 0)
+    val path = List(b, c, A, startCave)
+    cs1.filterVisit(b, path) mustEqual false
+    cs1.filterVisit(A, path) mustEqual true
+    val cs2 = CaveSystem(Map.empty, 1)
+    cs2.filterVisit(b, path) mustEqual true
   }
 
   "Cave parsing" >> {
@@ -69,10 +79,12 @@ class Day12Spec extends Specification {
 
   "Larger system" >> {
     CaveSystem(largerSystemLines).allPaths.size mustEqual 19
+    CaveSystem(largerSystemLines, 1).allPaths.size mustEqual 103
   }
 
   "Even larger system" >> {
     CaveSystem(evenLargerSystemLines).allPaths.size mustEqual 226
+    CaveSystem(evenLargerSystemLines, 1).allPaths.size mustEqual 3509
   }
 
 }
