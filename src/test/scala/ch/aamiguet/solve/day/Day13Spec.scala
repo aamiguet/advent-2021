@@ -4,7 +4,7 @@ import org.specs2.mutable.Specification
 import Day13.*
 
 class Day13Spec extends Specification {
-  "Day 12 Specification".br
+  "Day 13 Specification".br
 
   val dots =
     List(
@@ -34,7 +34,6 @@ class Day13Spec extends Specification {
     val d2 = foldPaper(d1, AlongX(5))
     printDots(d2)
     d2.size mustEqual 16
-
   }
 
   "Fold parsing" >> {
