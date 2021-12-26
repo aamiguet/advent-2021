@@ -39,6 +39,10 @@ class Day14Spec extends Specification {
   }
 
   "Substracting the quantity of least common element from the quantity of the most common element" >> {
-    part1Count(template, rules) mustEqual 1588
+    part1Count(template, rules) mustEqual 1588L
+  }
+
+  "Substracting the quantity of least common element from the quantity of the most common element" >> {
+    part2Count(template, rules) mustEqual 2188189693529L
   }
 }
