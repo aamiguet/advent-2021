@@ -42,7 +42,11 @@ class Day14Spec extends Specification {
     part1Count(template, rules) mustEqual 1588L
   }
 
-  "Substracting the quantity of least common element from the quantity of the most common element" >> {
+  "polymerization" >> {
+    polymerization("NN", rules) mustEqual List("NC", "CN")
+  }
+
+  "Part 2 count" >> {
     part2Count(template, rules) mustEqual 2188189693529L
   }
 }
