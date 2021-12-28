@@ -11,18 +11,53 @@ object Day16 extends Day {
     def subpackets: List[Packet]
 
     def versionSum: Int = version + subpackets.map(_.versionSum).sum
+    def computedValue: BigInt
   }
 
   case class Frame(val subpackets: List[Packet]) extends Packet {
     val version = 0
     val id = 0
+
+    val computedValue = subpackets.head.computedValue
   }
 
   case class Literal(val version: Int, val id: Int, val value: BigInt) extends Packet {
     val subpackets = Nil
+    val computedValue = value
   }
 
-  case class Operator(val version: Int, val id: Int, val subpackets: List[Packet]) extends Packet {}
+  case class Operator(val version: Int, val id: Int, val subpackets: List[Packet]) extends Packet {
+
+    lazy val computedValue = {
+      val cvs = subpackets.map(_.computedValue)
+      id match {
+        case 0 =>
+          cvs.sum
+        case 1 =>
+          cvs.product
+        case 2 =>
+          cvs.min
+        case 3 =>
+          cvs.max
+        case 5 =>
+          if (cvs.head > cvs.last)
+            1
+          else
+            0
+        case 6 =>
+          if (cvs.head < cvs.last)
+            1
+          else
+            0
+        case 7 =>
+          if (cvs.head == cvs.last)
+            1
+          else
+            0
+      }
+    }
+
+  }
 
   case object Packet {
 
@@ -115,6 +150,6 @@ object Day16 extends Day {
   lazy val f = frame(hex)
 
   def part1 = println(s"Sum of all version number is ${f.versionSum}")
-  def part2 = ???
+  def part2 = println(s"Computed value is ${f.computedValue}")
 
 }

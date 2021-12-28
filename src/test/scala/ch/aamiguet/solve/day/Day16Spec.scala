@@ -32,4 +32,15 @@ class Day16Spec extends Specification {
     frame("A0016C880162017C3686B18A3D4780").versionSum mustEqual 31
   }
 
+  "Computing some values" >> {
+    frame("C200B40A82").computedValue mustEqual 3
+    frame("04005AC33890").computedValue mustEqual 54
+    frame("880086C3E88112").computedValue mustEqual 7
+    frame("CE00C43D881120").computedValue mustEqual 9
+    frame("D8005AC2A8F0").computedValue mustEqual 1
+    frame("F600BC2D8F").computedValue mustEqual 0
+    frame("9C005AC2F8F0").computedValue mustEqual 0
+    frame("9C0141080250320F1802104A08").computedValue mustEqual 1
+  }
+
 }
