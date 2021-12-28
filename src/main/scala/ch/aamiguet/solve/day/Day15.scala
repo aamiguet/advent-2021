@@ -19,7 +19,7 @@ object Day15 extends Day {
       val arr = lines.toArray
       (for {
         x <- 0 until arr.length
-        y <- 0 until arr(x).length if x > 0 || y > 0 // skip top-left
+        y <- 0 until arr(x).length
       } yield Position(x, y, arr(x)(y).asDigit)).toList
 
   }
@@ -48,15 +48,39 @@ object Day15 extends Day {
 
   def discoverFromOrigin(positions: List[Position]): List[Position] =
     val origin = Position(0, 0, 0, 0)
-    discover(Nil, origin :: positions)
+    val ps = positions.filter(p => p.x > 0 || p.y > 0)
+    discover(Nil, origin :: ps)
 
   def destinationRisk(positions: List[Position], x: Int, y: Int): Int =
     positions.filter(p => p.x == x && p.y == y).head.cumulativeRisk
 
   def destinationRisk(lines: List[String]): Int = {
     val positions = discoverFromOrigin(Position.parsePositions(lines))
-    val x = lines.length - 1
-    val y = lines.head.length - 1
+    val x = positions.map(_.x).max
+    val y = positions.map(_.y).max
+    destinationRisk(positions, x, y)
+  }
+
+  def tileRisk(risk: Int, x: Int, y: Int) =
+    val r = (risk + x + y) % 9
+    if (r == 0) 9
+    else r
+
+  def fullPositions(positions: List[Position]): List[Position] =
+    val xSize = positions.map(_.x).max + 1
+    val ySize = positions.map(_.y).max + 1
+    val repeat = 5
+    for {
+      p <- positions
+      x <- 0 until repeat
+      y <- 0 until repeat
+    } yield Position(p.x + x * xSize, p.y + y * ySize, tileRisk(p.risk, x, y))
+
+  def fullDestinationRisk(lines: List[String]): Int = {
+    val ps = fullPositions(Position.parsePositions(lines))
+    val positions = discoverFromOrigin(ps)
+    val x = positions.map(_.x).max
+    val y = positions.map(_.y).max
     destinationRisk(positions, x, y)
   }
 
@@ -71,5 +95,5 @@ object Day15 extends Day {
       .toList
 
   def part1 = println(s"The minimal destination risk is ${destinationRisk(lines)}")
-  def part2 = ???
+  def part2 = println(s"This is taking time, but we know that the minimal full destination risk is ${fullDestinationRisk(lines)}")
 }

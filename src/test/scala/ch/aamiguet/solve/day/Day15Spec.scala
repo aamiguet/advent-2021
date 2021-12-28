@@ -23,11 +23,22 @@ class Day15Spec extends Specification {
   lazy val positions: List[Position] = Position.parsePositions(lines)
 
   "Parsing position" >> {
-    positions.length mustEqual 99
+    positions.length mustEqual 100
   }
 
   "Destination risk" >> {
     destinationRisk(lines) mustEqual 40
+  }
+
+  "Tile risk" >> {
+    tileRisk(9, 0, 0) mustEqual 9
+    tileRisk(5, 1, 0) mustEqual 6
+    tileRisk(6, 2, 1) mustEqual 9
+    tileRisk(4, 5, 5) mustEqual 5
+  }
+
+  "Full destination risk" >> {
+    fullDestinationRisk(lines) mustEqual 315
   }
 
 }
