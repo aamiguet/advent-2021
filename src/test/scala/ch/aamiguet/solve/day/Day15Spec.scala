@@ -20,11 +20,7 @@ class Day15Spec extends Specification {
     "2311944581",
   )
 
-  lazy val positions: List[Position] = Position.parsePositions(lines)
-
-  "Parsing position" >> {
-    positions.length mustEqual 100
-  }
+  lazy val positions: Array[Array[Position]] = Position.parsePositions(lines)
 
   "Destination risk" >> {
     destinationRisk(lines) mustEqual 40

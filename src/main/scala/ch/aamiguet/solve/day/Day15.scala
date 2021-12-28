@@ -4,84 +4,95 @@ import ch.aamiguet.solve.Day
 
 object Day15 extends Day {
 
+  type Index = (Int, Int)
+
   case class Position(
-    val x: Int,
-    val y: Int,
     val risk: Int,
     val cumulativeRisk: Int = Int.MaxValue,
+    val visited: Boolean = false,
   ) {
-    def withCumulativeRisk(c: Int): Position = Position(x, y, risk, c + risk)
+    def withCumulativeRisk(c: Int): Position = Position(risk, c + risk)
+    def withVisited(b: Boolean): Position = Position(risk, cumulativeRisk, true)
   }
 
   object Position {
 
-    def parsePositions(lines: List[String]): List[Position] =
-      val arr = lines.toArray
-      (for {
-        x <- 0 until arr.length
-        y <- 0 until arr(x).length
-      } yield Position(x, y, arr(x)(y).asDigit)).toList
+    def apply(risk: String): Position = Position(risk.toInt)
+
+    def parsePositions(
+      lines: List[String]
+    ): Array[Array[Position]] = lines.toArray.map(line => line.split("").map(Position.apply))
 
   }
 
-  def isNeighbor(p: Position)(origin: Position): Boolean = {
-    val xAxisNeighbor = p.x == origin.x && Math.abs(p.y - origin.y) == 1
-    val yAxisNeighbor = p.y == origin.y && Math.abs(p.x - origin.x) == 1
-    xAxisNeighbor || yAxisNeighbor
-  }
+  def neighborIndexes(
+    x: Int,
+    y: Int,
+  ): List[Index] = List((x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1))
 
-  def discover(visited: List[Position], unvisited: List[Position]): List[Position] =
-    if (unvisited.size == 0) visited
-    else {
-      val sorted = unvisited.sortBy(_.cumulativeRisk)
-      val current = sorted.head
-      val (neighbors, others) = sorted.tail.partition(isNeighbor(current))
-      val updatedNs = neighbors.map { n =>
-        val updatedN = n.withCumulativeRisk(current.cumulativeRisk)
-        if (updatedN.cumulativeRisk < n.cumulativeRisk)
-          updatedN
-        else
-          n
+  def discover(positions: Array[Array[Position]], toVisit: List[Index]): Unit =
+    if (toVisit.isEmpty) {} else {
+      // visitable position with lowest cumulative risk
+      val sorted = toVisit.sortBy(p => positions(p._1)(p._2).cumulativeRisk)
+      val (x, y) = sorted.head
+      // marked as visited
+      val currentPos = positions(x)(y).withVisited(true)
+      positions(x).update(y, currentPos)
+      // updating cumulative cost of neighbors
+      val toUpdate = neighborIndexes(x, y).filter(i =>
+        positions.isDefinedAt(i._1) && positions(i._1).isDefinedAt(i._2) && !positions(i._1)(
+          i._2
+        ).visited
+      )
+      toUpdate.map { i =>
+        val neighbor = positions(i._1)(i._2)
+        val updated = neighbor.withCumulativeRisk(currentPos.cumulativeRisk)
+        if (neighbor.cumulativeRisk > updated.cumulativeRisk)
+          positions(i._1).update(i._2, updated)
       }
-      discover(current :: visited, updatedNs ++ others)
+      // updating list of position to visit
+      val nextToVisit = (sorted.tail ++ toUpdate).toSet.toList
+      discover(positions, nextToVisit)
     }
 
-  def discoverFromOrigin(positions: List[Position]): List[Position] =
-    val origin = Position(0, 0, 0, 0)
-    val ps = positions.filter(p => p.x > 0 || p.y > 0)
-    discover(Nil, origin :: ps)
+  def discoverFromOrigin(positions: Array[Array[Position]]): Array[Array[Position]] =
+    val origin = Position(0, 0)
+    positions(0).update(0, origin)
+    discover(positions, List((0, 0)))
+    positions
 
-  def destinationRisk(positions: List[Position], x: Int, y: Int): Int =
-    positions.filter(p => p.x == x && p.y == y).head.cumulativeRisk
+  def destinationRisk(positions: Array[Array[Position]]): Int =
+    val x = positions.length - 1
+    val y = positions(x).length - 1
+    positions(x)(y).cumulativeRisk
 
   def destinationRisk(lines: List[String]): Int = {
     val positions = discoverFromOrigin(Position.parsePositions(lines))
-    val x = positions.map(_.x).max
-    val y = positions.map(_.y).max
-    destinationRisk(positions, x, y)
+    destinationRisk(positions)
   }
 
   def tileRisk(risk: Int, x: Int, y: Int) =
     val r = (risk + x + y) % 9
-    if (r == 0) 9
-    else r
+    if (r == 0)
+      9
+    else
+      r
 
-  def fullPositions(positions: List[Position]): List[Position] =
-    val xSize = positions.map(_.x).max + 1
-    val ySize = positions.map(_.y).max + 1
+  def fullPositions(positions: Array[Array[Position]]): Array[Array[Position]] = {
     val repeat = 5
-    for {
-      p <- positions
-      x <- 0 until repeat
-      y <- 0 until repeat
-    } yield Position(p.x + x * xSize, p.y + y * ySize, tileRisk(p.risk, x, y))
+    val xSize = positions.length
+    val ySize = positions(0).length
+
+    Array.tabulate(xSize * repeat, ySize * repeat) { (x, y) =>
+      val ref = positions(x % xSize)(y % ySize)
+      Position(tileRisk(ref.risk, x / xSize, y / ySize))
+    }
+  }
 
   def fullDestinationRisk(lines: List[String]): Int = {
     val ps = fullPositions(Position.parsePositions(lines))
     val positions = discoverFromOrigin(ps)
-    val x = positions.map(_.x).max
-    val y = positions.map(_.y).max
-    destinationRisk(positions, x, y)
+    destinationRisk(positions)
   }
 
   val dayId = 15
@@ -95,5 +106,9 @@ object Day15 extends Day {
       .toList
 
   def part1 = println(s"The minimal destination risk is ${destinationRisk(lines)}")
-  def part2 = println(s"This is taking time, but we know that the minimal full destination risk is ${fullDestinationRisk(lines)}")
+
+  def part2 = println(
+    s"This is taking time, but we know that the minimal full destination risk is ${fullDestinationRisk(lines)}"
+  )
+
 }
