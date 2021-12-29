@@ -1,6 +1,7 @@
 package ch.aamiguet.solve.day
 
 import ch.aamiguet.solve.Day
+import ch.aamiguet.math.naturalSum
 import scala.io.Source
 
 object Day7 extends Day {
@@ -25,7 +26,7 @@ object Day7 extends Day {
 
   def increasingFuelCost(crabPos: Int, pos: Int) = {
     val diff = math.abs(crabPos - pos)
-    (diff * (diff + 1)) / 2
+    naturalSum(diff)
   }
 
   def part1 = {
