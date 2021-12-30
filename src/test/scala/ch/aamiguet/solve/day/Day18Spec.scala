@@ -127,4 +127,8 @@ class Day18Spec extends Specification {
     ).magnitude mustEqual 3488
   }
 
+  "Largest magnitude of the sum of any two snailfish numbers" >> {
+    maxSumOfAny2(fullExample) mustEqual 3993
+  }
+
 }

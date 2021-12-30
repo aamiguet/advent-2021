@@ -174,6 +174,15 @@ object Day18 extends Day {
 
   lazy val sns = SnailfishNumber.parse(lines)
 
+  def maxSumOfAny2(sns: List[SnailfishNumber]): Int = {
+    val pairs = for {
+      s1 <- sns
+      s2 <- sns if s1 != s2
+    } yield (s1, s2)
+
+    pairs.map(p => (p._1 + p._2).magnitude).max
+  }
+
   def part1 = println(s"Magnitude of the final sum is ${SnailfishNumber.sum(sns).magnitude}")
-  def part2 = ???
+  def part2 = println(s"Largest magnitude is ${maxSumOfAny2(sns)}")
 }
