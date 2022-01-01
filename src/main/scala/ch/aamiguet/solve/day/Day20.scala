@@ -92,5 +92,9 @@ object Day20 extends Day {
     println(s"Enhancing twice gives ${lc} lit pixels")
   }
 
-  def part2 = ???
+  def part2 = {
+    val (ep, _) = enhance(picture, algoritm, 50, Black)
+    val lc = litCount(ep)
+    println(s"Enhancing twice gives ${lc} lit pixels")
+  }
 }
