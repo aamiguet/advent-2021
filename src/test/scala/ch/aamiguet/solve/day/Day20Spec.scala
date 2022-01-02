@@ -21,13 +21,11 @@ class Day20Spec extends Specification {
 
   "Enhancing twice" >> {
     val (p, _) = enhance(picture, algoritm, 2, Black)
-    println(print(p))
     litCount(p) mustEqual 35
   }
 
   "Enhancing 50 times" >> {
     val (p, _) = enhance(picture, algoritm, 50, Black)
-    println(print(p))
     litCount(p) mustEqual 3351
   }
 
