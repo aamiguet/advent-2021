@@ -16,4 +16,11 @@ class Day21Spec extends Specification {
     finalScore(w, l, d) mustEqual 739785
   }
 
+  "Final score of Dirac Dice" >> {
+    val p1 = Player1(4, 0)
+    val p2 = Player2(8, 0)
+    val gss = play(p1, p2)
+    finalScore(gss) mustEqual 444356092776315L
+  }
+
 }
