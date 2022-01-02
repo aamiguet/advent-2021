@@ -27,7 +27,7 @@ object Day21 extends Day {
 
   }
 
-  object DiractDice {
+  object DiracDice {
     val MOVES = Map(
       (3 -> 1L),
       (4 -> 3L),
@@ -140,7 +140,7 @@ object Day21 extends Day {
       gss
     else {
       val newGss = gss.foldLeft(Map.empty[Universe, Long]) { (acc, gs) =>
-        val ns = gs._1.nextStates(DiractDice.MOVES)
+        val ns = gs._1.nextStates(DiracDice.MOVES)
         ns.foldLeft(acc) { (innerAcc, n) =>
           innerAcc.updatedWith(n._1) {
             case Some(l) =>
