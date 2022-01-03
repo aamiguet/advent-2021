@@ -25,6 +25,7 @@ object Solver {
     "18" -> Day18,
     "20" -> Day20,
     "21" -> Day21,
+    "22" -> Day22,
   )
 
   def solve(args: Map[String, Any]): Unit =
